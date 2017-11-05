@@ -1,29 +1,77 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300');
+
 .App {
   text-align: center;
-  padding: 100px;
+  background: rgb(185, 230, 255);
+  background: linear-gradient(to bottom right, rgb(185, 230, 255), rgb(0, 166, 255));
+  color: white;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-family: 'Open Sans';
+  text-shadow: 1px 1px grey;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.clock {
+  font-size: 10vw;
+  font-weight: 300;
+  margin: 0;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+.title {
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  font-size: 50px;
+  padding-right: 10px;
+}
+
+*:focus{
+  outline: none;
+}
+
+.textBox {
+  background: none;
+  color: white;
+  border:none;
+  border-bottom: 1px solid white;
+  text-align: center;
+  text-shadow: 1px 1px grey;
+  margin-right: 5px;
+}
+
+.textBox::-webkit-input-placeholder {
   color: white;
 }
 
-.App-title {
-  font-size: 1.5em;
+#amPmBox {
+  color: white;
 }
 
-.App-intro {
-  font-size: large;
+.textOpt {
+  color: black;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+#submit {
+  background: white;
+  color: black;
+  text-shadow: none;
+  border: white 2px solid;
+  cursor:pointer;
+}
+#submit:active {
+  transform: translateY(2px);
+}
+
+.form {
+  padding-top: 50px;
 }
