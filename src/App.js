@@ -101,6 +101,8 @@ class Alarm extends Component {
     this.handleAM = this.handleAM.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
+    this.handleUp = this.handleUp.bind(this)
+    this.handleDown = this.handleDown.bind(this)
   }
   
   handleHours(event) {
@@ -144,6 +146,22 @@ class Alarm extends Component {
     })
   }
 
+  handleUp() {
+    const {hour, min, am} = this.state
+    if ( hour > 1) {
+      this.setState({
+        hour: hour - 1
+      })
+    }
+  }
+  handleDown() {
+    const {hour, min, am} = this.state
+    if (hour < 12)
+    this.setState({
+      hour: parseInt(hour,10) + 1
+    })
+  }
+
   componentDidMount() {
     this.timerID = setInterval(
      () => this.handleRinging(),
@@ -174,23 +192,42 @@ class Alarm extends Component {
         { !alarm &&
           <div>
           <form className="form border" onSubmit={this.handleSubmit}>
-          
-            <span className="border">{hour !== '' && hour > 1 ? hour - 1 : ''}</span>
-            <span className="col-top border">{min !== '' && min > 0 ? ('0' + (min - 1)).slice(-2) : ''}</span>
-            <span className="col-top border">{am === "PM" ? "AM" : '' }</span>
             
-            <div className="col border">
-              <input type="number" value={hour} required="true" min="1" max="12" className="textBox border" onChange={this.handleHours} />
-              <span className="colon border">:</span>
+            <span className="col-top border" onClick={this.handleUp}> {hour !== '' && hour > 1 ? hour - 1 : ''}</span>
+            <span className="col'-top border" onClick={this.handleUp}>{min !== '' && min > 0 ? ('0' + (min - 1)).slice(-2) : ''}</span>
+            <span className="col-top border" onClick={this.handleUp}>{am === "PM" ? "AM" : '' }</span>
+            
+            <div>
+              <input 
+              type="text" 
+              value={hour} 
+              required="true" 
+              min="1" 
+              max="12" 
+              className="col-mid textBox border" 
+              onChange={this.handleHours} />
+              <span className="colon col-mid border">:</span>
             </div>  
-            <div className="col border">
-              <input type="number" value={min} required="true" min="0" max="59" className="textBox border" onChange={this.handleMins} />
+            <div>
+              <input 
+              type="text" 
+              value={min} 
+              required="true" 
+              min="0" 
+              max="59" 
+              className="col-mid textBox border" 
+              onChange={this.handleMins} />
             </div>  
-            <div className="col border">
-              <input type="text" value={am} pattern="(AM|PM)" className="textBox border" onChange={this.handleAM}/>
+            <div>
+              <input 
+              type="text" 
+              value={am} 
+              pattern="(AM|PM)" 
+              className="col-mid textBox border" 
+              onChange={this.handleAM}/>
             </div>  
 
-            <span className="col-bot border">{hour !== '' && hour < 12 ? parseInt(hour, 10) + 1 : ''}</span>
+            <span className="col-bot border" hh={"1"} onClick={this.handleDown}>{hour !== '' && hour < 12 ? parseInt(hour, 10) + 1 : ''}</span>
             <span className="col-bot border">{min !== '' && min >= 0 && min < 59 ? ('0' + (parseInt(min, 10) + 1)).slice(-2) : ''}</span>
             <span className="col-bot border">{am === "AM" ? "PM" : ''}</span>
     
