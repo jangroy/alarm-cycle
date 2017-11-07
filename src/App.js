@@ -56,7 +56,6 @@ class Clock extends Component {
   }
 }
 
-
 function AlarmNotify(props) {
   const alarm = props.alarm
   const isRinging = props.isRinging
@@ -71,7 +70,10 @@ function AlarmNotify(props) {
         transitionEnterTimeout={500}
         transitionLeaveTimeout={300}> 
         <div>
-          <h3 className="form">Alarm will ring at {alarm.slice(0, 4) + alarm.slice(7, alarm.legnth) }</h3>
+        <h3 className="form">Alarm will ring at 
+        {alarm.length === 11 ? ` ${alarm.slice(0, 5)} ${alarm.slice(8, alarm.legnth)}` 
+                             : ` ${alarm.slice(0, 4)} ${alarm.slice(7, alarm.legnth)}`}
+        </h3>
           <button className="textBox" id="submit" onClick={() => props.cancel()}>Cancel</button>
         </div>
         </ReactCSSTransitionGroup>
