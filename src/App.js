@@ -14,15 +14,16 @@ function Title() {
   )
 }
 
+const options = {
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+  hour12: true
+}
+
 class Clock extends Component {
   constructor(props) { 
     super(props) // base constructor
-    const options = {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true
-    }
     this.state = { 
       dateFIX: new Date().toLocaleTimeString('en-US', options)
     } // initial state
@@ -39,12 +40,6 @@ class Clock extends Component {
   }
   // when tick is called, setState to the new Date
   tick() {
-    const options = {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true
-    }
     this.setState({
       dateFIX: new Date().toLocaleTimeString('en-US', options)
     })
