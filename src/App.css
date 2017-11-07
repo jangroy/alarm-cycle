@@ -15,12 +15,19 @@
   flex-direction: column;
   font-family: 'Open Sans';
   text-shadow: 1px 1px grey;
+  /* animation: 0.5s ease 0s normal forwards 1 fadein; */
 }
 
 .clock {
-  font-size: 10vw;
+  font-size: 14vw;
   font-weight: 300;
   margin: 0;
+}
+
+@keyframes fadein {
+  0% { opacity: 0;}
+  66% { opacity: 0;}
+  100% { opacity: 1;}
 }
 
 .title {
@@ -47,6 +54,7 @@
   text-align: center;
   text-shadow: 1px 1px grey;
   margin-right: 5px;
+  width: 75px;
 }
 
 .textBox::-webkit-input-placeholder {
@@ -69,9 +77,24 @@
   cursor:pointer;
 }
 #submit:active {
-  transform: translateY(2px);
+  transform: translateY(1px);
 }
 
 .form {
   padding-top: 50px;
+}
+
+.fade-enter {
+  opacity: 0.01;
+}
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  opacity: opacity 500ms ease-in;
+}
+.fade-leave {
+  opacity: 1;
+}
+.fade-leave.fade-leave-active {
+  opacity: 0.01;
+  opacity: opacity 300ms ease-in;
 }

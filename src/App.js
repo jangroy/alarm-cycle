@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
-import './App.css';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import ReactHowler from 'react-howler'
 import FaClockO from 'react-icons/lib/fa/clock-o'
+import FaCaretUp from 'react-icons/lib/fa/caret-up'
+import './App.css';
+
+function Title() {
+  return (
+  <div className="title"> 
+    <FaClockO className="icon" />
+    <h1>Alarm Cycle</h1>
+  </div>
+  )
+}
 
 class Clock extends Component {
   constructor(props) { 
@@ -13,7 +24,7 @@ class Clock extends Component {
       hour12: true
     }
     this.state = { 
-      date: new Date().toLocaleTimeString('en-US', options),
+      dateFIX: new Date().toLocaleTimeString('en-US', options)
     } // initial state
   }
   // lifecycle hooks
@@ -35,26 +46,21 @@ class Clock extends Component {
       hour12: true
     }
     this.setState({
-      date: new Date().toLocaleTimeString('en-US', options)
+      dateFIX: new Date().toLocaleTimeString('en-US', options)
     })
   }
 
   render() {
-    const { date } = this.state
-
+    const {dateFIX} = this.state
     return (
       <div>
-        <div className="title"> 
-          <FaClockO className="icon" />
-          <h1>Alarm Cycle</h1>
-        </div>
-
-        <h1 className="clock">{date}</h1>
-        <Alarm date={date} />
+        <h1 className="clock">{dateFIX}</h1>
+        <Alarm date={dateFIX} />        
       </div>
     )
   }
 }
+
 
 function AlarmNotify(props) {
   const alarm = props.alarm
@@ -64,9 +70,16 @@ function AlarmNotify(props) {
     return null
   } else {
     if (alarm && !isRinging) {
-      console.log(alarm)
       return (
-        <h3 className="form">Alarm will ring at {alarm.slice(0, 4) + alarm.slice(7, alarm.legnth) }</h3>
+        <ReactCSSTransitionGroup 
+        transitionName="fade"
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={300}> 
+        <div>
+          <h3 className="form">Alarm will ring at {alarm.slice(0, 4) + alarm.slice(7, alarm.legnth) }</h3>
+          <button className="textBox" id="submit" onClick={() => props.cancel()}>Cancel</button>
+        </div>
+        </ReactCSSTransitionGroup>
       )
     } else {
       return null
@@ -90,6 +103,7 @@ class Alarm extends Component {
     this.handleMins = this.handleMins.bind(this)
     this.handleAM = this.handleAM.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
 
   }
   
@@ -102,32 +116,13 @@ class Alarm extends Component {
   handleAM(event) {
     this.setState({ am: event.target.value })
   }
-
   handleSubmit(event) {
     event.preventDefault();
     this.setState({ 
       alarm: this.state.hour + ":" + this.state.min + ":" + this.state.sec + " " + this.state.am,
       isRinging: false
     })
-
   }
-  handleSound() {
-    this.setState({
-      isRinging: false,
-      alarm: null
-    })
-  }
-
-  componentDidMount() {
-    this.timerID = setInterval(
-     () => this.handleRinging(),
-     1000 
-    )
-  }
-  componentWillUnmount() {
-    clearInterval(this.timerID)
-  }
-
   handleRinging() {
     if ((this.state.alarm != null) && (this.props.date === this.state.alarm)) {
       this.setState({
@@ -135,12 +130,34 @@ class Alarm extends Component {
       })
     }
   }
+  handleSound() {
+    this.setState({
+      isRinging: false,
+      alarm: null
+    })
+  }
+  handleCancel() {
+    this.setState({
+      alarm: null
+    })
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+     () => this.handleRinging(),
+     1 
+    )
+  }
+  componentWillUnmount() {
+    clearInterval(this.timerID)
+  }
+
 
   render(){
     const { isRinging, alarm } = this.state;
     return (
       <div>
-        <AlarmNotify alarm={alarm} isRinging={isRinging} />
+        <AlarmNotify alarm={alarm} isRinging={isRinging} cancel={this.handleCancel} />
         { isRinging === true &&
         <div className="form">
           <ReactHowler 
@@ -148,31 +165,24 @@ class Alarm extends Component {
             playing={isRinging}
             loop={true}
           />
-          <button className="textBox" id="submit" onClick={() => this.handleSound()}>Turn Off Alarm</button>
+          <button className="textBox" id="submit" onClick={() => this.handleSound()}>Turn Off</button>
         </div>
         }
         { !alarm &&
           <form className="form" onSubmit={this.handleSubmit}>
-            Alarm Time:  
             <input type="number" placeholder="Hour" required="true" min="1" max="12" className="textBox" onChange={this.handleHours} />
             <input type="number" placeholder="Mins" required="true" min="0" max="59" className="textBox" onChange={this.handleMins} />
             <select className="textBox" id="amPmBox" onChange={this.handleAM}>
               <option className="textOpt">AM</option>
               <option className="textOpt">PM</option>
             </select>
+            <div>
             <input type="submit" className="textBox" id="submit" value="Set Alarm" />
+            </div>
           </form>
         }
       </div>
     )}
-}
-
-function SleepAt (){
-  return (
-    <div>
-      I'm going to sleep at ...
-    </div>
-  )
 }
 
 
@@ -180,10 +190,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <Title />
         <Clock />
       </div>
     );
   }
 }
-<pre>{JSON.stringify(this.state, null, 2)}</pre>
+
 export default App;
