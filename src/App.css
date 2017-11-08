@@ -16,10 +16,30 @@
   text-shadow: 1px 1px grey;
 }
 
+.highlight {
+  color: purple;
+  font-size: 1.2em;
+}
 .clock {
   font-size: 14vw;
   font-weight: 300;
   margin: 0;
+}
+
+.fadeIn{
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+.fadeIn {
+  animation-name: fadeIn;
+}
+
+.sleepInfo {
+
 }
 
 .title {

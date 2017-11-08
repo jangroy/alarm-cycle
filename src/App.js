@@ -15,7 +15,7 @@ const OPTIONS = {
 
 function Title() {
   return (
-  <div className="title"> 
+  <div className="title fadeIn"> 
     <FaClockO className="icon" />
     <h1>Alarm Cycle</h1>
   </div>
@@ -23,9 +23,18 @@ function Title() {
 }
 function Info() {
   return (
-    <div className="info">
+    <div className="info fadeIn">
       <FaGithub className="icon-small" />
       <a className="borBot" href="http://github.com/jangroy/alarm-cycle">github</a>
+    </div>
+  )
+}
+function SleepInfo() {
+  return (
+    <div className="fadeIn">
+      <h4>A good night's sleep consists of <span className="highlight">5-6</span> complete sleep cycles.</h4>
+      <h4>1 sleep cycle is about <span className="highlight">1</span> hour <span className="highlight">30</span> minutes.</h4>
+      <h4>You shold go to sleep <span className="highlight">7.5</span> or <span className="highlight">9</span> hours before the alarm for best results.</h4>
     </div>
   )
 }
@@ -39,11 +48,12 @@ function AlarmNotify(props) {
   } else {
     if (alarm && !isRinging) {
       return (
-        <div>
-          <h3> Alarm will ring at 
+        <div className="fadeIn">
+          <SleepInfo />
+          <h2> Alarm set: <span className="highlight">
           {alarm.length === 11 ? ` ${alarm.slice(0, 5)} ${alarm.slice(8, alarm.legnth)}` 
                                 : ` ${alarm.slice(0, 4)} ${alarm.slice(7, alarm.legnth)}`}
-          </h3>
+          </span></h2>
           <button id="submit" onClick={() => props.cancel()}>Cancel</button>
         </div>
       )
@@ -58,8 +68,8 @@ class Alarm extends Component {
   constructor(props) {
     super(props)
     this.state = { 
-      hour: "9",
-      min: "29",
+      hour: "8",
+      min: "30",
       sec: '00',
       am: 'AM',
       alarm: null,
@@ -176,23 +186,23 @@ class Alarm extends Component {
     return (
       <div>
         { alarm && 
-          <h1 className="clock">{clock}</h1>
+          <h1 className="clock fadeIn">{clock}</h1>
         }
         <AlarmNotify alarm={alarm} isRinging={isRinging} cancel={this.handleCancel} />
         
         { isRinging &&
-        <div>
+        <div className="fadeIn">
           <ReactHowler 
             src="alarm.mp3"
             playing={isRinging}
             loop={true}
           />
-          <button id="submit" onClick={() => this.handleSound()}>Turn Off</button>
+          <button id="submit" onClick={() => this.handleSound()}>Wake Up!</button>
         </div>
         }
 
         { !alarm &&
-          <div>
+          <div className="fadeIn">
           <form className="form" onSubmit={this.handleSubmit}>
             
             <div className="col-anim box">
