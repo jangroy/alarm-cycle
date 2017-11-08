@@ -1,5 +1,5 @@
 Alarm Cycle made with React
 
-[Demo] (https://jangroy.github.io/alarm-cycle)
+[Live Demo](https://jangroy.github.io/alarm-cycle)
 
-Roy Jang
+Made by Roy Jang
