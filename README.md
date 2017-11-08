@@ -1,3 +1,3 @@
-Alarm Cycle
+Created with React
 
-Roy Jang
+[Live Demo](https://jangroy.github.io/alarm-cycle)
