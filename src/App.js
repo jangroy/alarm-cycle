@@ -53,18 +53,20 @@ function AlarmNotify(props) {
   }
 }
 
+
 class Alarm extends Component {
   constructor(props) {
     super(props)
     this.state = { 
       hour: "9",
-      min: "30",
+      min: "29",
       sec: '00',
       am: 'AM',
       alarm: null,
       isRinging: false,
-      dateFIX: new Date().toLocaleTimeString('en-US', OPTIONS)
-     }
+      clock: new Date().toLocaleTimeString('en-US', OPTIONS)
+    }
+    
     this.handleHours = this.handleHours.bind(this)
     this.handleMins = this.handleMins.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -80,7 +82,6 @@ class Alarm extends Component {
     if ((event.target.value <= 12 && event.target.value >= 1) || event.target.value === '') {
       this.setState({ hour:  event.target.value })
     }
-    
   }
   handleMins(event) {
     if ((event.target.value <= 59 && event.target.value >= 0) || event.target.value === '') {
@@ -95,7 +96,7 @@ class Alarm extends Component {
     })
   }
   handleRinging() {
-    if ((this.state.alarm != null) && (this.props.date === this.state.alarm)) {
+    if ((this.state.alarm != null) && (this.state.clock === this.state.alarm)) {
       this.setState({
         isRinging: true
       })
@@ -133,7 +134,7 @@ class Alarm extends Component {
     const {min} = this.state
     if ( min > 1) {
       this.setState({
-        min: ('0' + (min - 5)).slice(-2)
+        min: ('0' + (min - (min % 5 === 0 ? 5 : min % 5))).slice(-2)
       })
     }
   }
@@ -141,7 +142,7 @@ class Alarm extends Component {
     const {min} = this.state
     if ( min < 56) {
       this.setState({
-        min: ('0' + (parseInt(min,10) + 5)).slice(-2)
+        min: ('0' + (parseInt(min,10) - (min % 5 === 0 ? -5 : (min % 5) - 5))).slice(-2)
       })
     }
   }
@@ -152,7 +153,7 @@ class Alarm extends Component {
   // when tick is called, setState to the new Date
   tick() {
     this.setState({
-      dateFIX: new Date().toLocaleTimeString('en-US', OPTIONS)
+      clock: new Date().toLocaleTimeString('en-US', OPTIONS)
     })
   }
   componentDidMount() {
@@ -162,7 +163,7 @@ class Alarm extends Component {
     )
     this.timerTick = setInterval(
      () => this.tick(),
-     1000
+     1
     )
   }
   componentWillUnmount() {
@@ -171,12 +172,12 @@ class Alarm extends Component {
   }
 
   render(){
-    const { isRinging, alarm, hour, min, am, dateFIX } = this.state;
+    const { isRinging, alarm, hour, min, am, clock } = this.state;
     return (
       <div>
-      { alarm && 
-        <h1 className="clock">{dateFIX}</h1>
-      }
+        { alarm && 
+          <h1 className="clock">{clock}</h1>
+        }
         <AlarmNotify alarm={alarm} isRinging={isRinging} cancel={this.handleCancel} />
         
         { isRinging &&
@@ -195,13 +196,13 @@ class Alarm extends Component {
           <form className="form" onSubmit={this.handleSubmit}>
             
             <div className="col-anim box">
-              {hour - 1  !== 0  ? <FaCaretUp className="col-anim" onClick={this.handleHUp} /> : '' }
+              {hour > 1 ? <FaCaretUp className="col-anim" onClick={this.handleHUp} /> : '' }
               <span className="col-anim" onClick={this.handleHUp}>
               {hour !== '' && hour > 1 ? hour - 1 : ''}
               </span>
             </div>
             <div className="col-anim box">
-              {min - 1  !== -1  ? <FaCaretUp className="col-anim" onClick={this.handleMUp} />  : '' }
+              {min > 5  ? <FaCaretUp className="col-anim" onClick={this.handleMUp} />  : '' }
               <span className="col-anim" onClick={this.handleMUp}>
               {min !== '' && min > 4 ? ('0' + (min - (min % 5 === 0 ? 5 : min % 5))).slice(-2) : ''}
               </span>
@@ -243,13 +244,13 @@ class Alarm extends Component {
               <span className="col-anim" onClick={this.handleHDown}>
               {hour !== '' && hour < 12 ? parseInt(hour, 10) + 1 : ''}
               </span>
-              {parseInt(hour, 10) + 1  !== 13  ? <FaCaretDown className="col-anim" onClick={this.handleHDown}/> : '' }
+              {parseInt(hour, 10) < 12  ? <FaCaretDown className="col-anim" onClick={this.handleHDown}/> : '' }
             </div>
             <div className="col-anim box">
               <span className="col-anim" onClick={this.handleMDown}>
-              {min !== '' && min < 55 ? ('0' + (parseInt(min, 10) + (min % 5 === 0 ? 5 : min % 5))).slice(-2) : ''}
+              {min !== '' && min < 55 ? ('0' + (parseInt(min, 10) - (min % 5 === 0 ? 0 : min % 5) + 5)).slice(-2) : ''}
               </span>
-              {parseInt(min, 10) + 1  !== 56  ? <FaCaretDown className="col-anim" onClick={this.handleMDown}/> : '' }
+              {parseInt(min, 10) < 55 ? <FaCaretDown className="col-anim" onClick={this.handleMDown}/> : '' }
             </div>
             <div className="col-anim box">
               <span className="col-anim" onClick={this.handleAM}>
