@@ -266,8 +266,8 @@ class Alarm extends Component {
             </div>
             
             <span />
-            <div className="submit">
-              <input type="submit" className="submit-input" value="Set Alarm" />
+            <div>
+              <input type="submit" className="submit" value="Set Alarm" />
             </div>
 
           </form>
