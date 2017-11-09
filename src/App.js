@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import ReactHowler from 'react-howler'
-import FaClockO from 'react-icons/lib/fa/clock-o'
-import FaCaretUp from 'react-icons/lib/fa/caret-up'
-import FaCaretDown from 'react-icons/lib/fa/caret-down'
-import FaGithub from 'react-icons/lib/fa/github'
+import {FaCaretUp, FaCaretDown, FaGithub} from 'react-icons/lib/fa'
+import {MdAccessAlarm} from 'react-icons/lib/md'
 import './App.css';
 
 const OPTIONS = {
@@ -13,28 +11,26 @@ const OPTIONS = {
   hour12: true
 }
 
-function Title() {
+function Header() {
   return (
-  <div className="title fadeIn"> 
-    <FaClockO className="icon" />
+  <div className="header fadeIn"> 
+    <MdAccessAlarm className="icon" />
     <h1>Alarm Cycle</h1>
   </div>
   )
 }
-function Info() {
+function Footer() {
   return (
-    <div className="info fadeIn">
-      <FaGithub className="icon-small" />
-      <a className="borBot" href="http://github.com/jangroy/alarm-cycle">github</a>
+    <div className="footer fadeIn">
+      <a href="http://github.com/jangroy/alarm-cycle"><FaGithub className="icon-footer"/></a>
     </div>
   )
 }
 function SleepInfo() {
   return (
-    <div className="fadeIn">
+    <div className="alarm fadeIn">
       <h4>A good night's sleep consists of <span className="highlight">5-6</span> complete sleep cycles.</h4>
-      <h4>1 sleep cycle is about <span className="highlight">1</span> hour <span className="highlight">30</span> minutes.</h4>
-      <h4>You shold go to sleep <span className="highlight">7.5</span> or <span className="highlight">9</span> hours before the alarm for best results.</h4>
+      <h4><span className="highlight">1</span> sleep cycle is about <span className="highlight">1</span> hour <span className="highlight">30</span> minutes.</h4>
     </div>
   )
 }
@@ -54,7 +50,7 @@ function AlarmNotify(props) {
           {alarm.length === 11 ? ` ${alarm.slice(0, 5)} ${alarm.slice(8, alarm.legnth)}` 
                                 : ` ${alarm.slice(0, 4)} ${alarm.slice(7, alarm.legnth)}`}
           </span></h2>
-          <button id="submit" onClick={() => props.cancel()}>Cancel</button>
+          <button className="submit" onClick={() => props.cancel()}>Cancel</button>
         </div>
       )
     } else {
@@ -197,7 +193,7 @@ class Alarm extends Component {
             playing={isRinging}
             loop={true}
           />
-          <button id="submit" onClick={() => this.handleSound()}>Wake Up!</button>
+          <button className="submit" onClick={() => this.handleSound()}>Wake Up!</button>
         </div>
         }
 
@@ -212,7 +208,7 @@ class Alarm extends Component {
               </span>
             </div>
             <div className="col-anim box">
-              {min > 5  ? <FaCaretUp className="col-anim" onClick={this.handleMUp} />  : '' }
+              {min > 4  ? <FaCaretUp className="col-anim" onClick={this.handleMUp} />  : '' }
               <span className="col-anim" onClick={this.handleMUp}>
               {min !== '' && min > 4 ? ('0' + (min - (min % 5 === 0 ? 5 : min % 5))).slice(-2) : ''}
               </span>
@@ -270,8 +266,8 @@ class Alarm extends Component {
             </div>
             
             <span />
-            <div>
-              <input type="submit" id="submit" value="Set Alarm" />
+            <div className="submit">
+              <input type="submit" className="submit-input" value="Set Alarm" />
             </div>
 
           </form>
@@ -287,9 +283,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Info />
-        <Title />
-        <Alarm />
+        <div className="container">
+          <Header />
+          <Alarm />
+          <Footer />
+        </div>
       </div>
     );
   }
