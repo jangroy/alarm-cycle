@@ -1,3 +1,3 @@
-Created with React
+Developed with simple stateful components and event handlers. This was a project to help me understand the basics of ReactJS.
 
-[Live Demo](https://jangroy.github.io/alarm-cycle/)
+[Live](https://jangroy.github.io/alarm-cycle/)
